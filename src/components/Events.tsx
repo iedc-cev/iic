@@ -17,7 +17,7 @@ export default function Events() {
         const { data, error } = await supabase
           .from('events')
           .select('*, event_registrations(count)')
-          .order('start_time', { ascending: false });
+          .order('start_time', { ascending: true });
 
         if (error) {
           console.error("Error fetching events:", error);
@@ -185,44 +185,17 @@ export default function Events() {
           </div>
         ) : (
           <>
-            {liveEvents.length > 0 && (
-              <div className={styles.sectionBlock}>
-                <h3 className={styles.sectionTitle}>
-                  <span className={styles.liveIndicator} /> Live Now
-                </h3>
-                <div className={styles.ticketList}>
-                  {liveEvents.map((event) => (
-                    <TicketCard key={event.id} event={event} badge="LIVE NOW" badgeClass={styles.badgeLive} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {upcomingEvents.length > 0 && (
-              <div className={styles.sectionBlock}>
-                <h3 className={styles.sectionTitle}>
-                  <span className={styles.upcomingIndicator} /> Upcoming Events
-                </h3>
-                <div className={styles.ticketList}>
-                  {upcomingEvents.map((event) => (
-                    <TicketCard key={event.id} event={event} badge="UPCOMING" badgeClass={styles.badgeUpcoming} />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {pastEvents.length > 0 && (
-              <div className={styles.sectionBlock}>
-                <h3 className={styles.sectionTitle}>
-                  Past Events
-                </h3>
-                <div className={styles.ticketList}>
-                  {pastEvents.map((event) => (
-                    <TicketCard key={event.id} event={event} badge="COMPLETED" badgeClass={styles.badgePast} />
-                  ))}
-                </div>
-              </div>
-            )}
+            <div className={styles.ticketList}>
+              {pastEvents.map((event) => (
+                <TicketCard key={event.id} event={event} badge="COMPLETED" badgeClass={styles.badgePast} />
+              ))}
+              {liveEvents.map((event) => (
+                <TicketCard key={event.id} event={event} badge="LIVE NOW" badgeClass={styles.badgeLive} />
+              ))}
+              {upcomingEvents.map((event) => (
+                <TicketCard key={event.id} event={event} badge="UPCOMING" badgeClass={styles.badgeUpcoming} />
+              ))}
+            </div>
           </>
         )}
       </div>
